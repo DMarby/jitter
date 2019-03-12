@@ -45,13 +45,13 @@ func NewTicker(interval time.Duration, jitter time.Duration) *Ticker {
 	}
 
 	// Run the ticker
-	// Ticker.C is a read-only channel, so we need to pass it
+	// Ticker.C is a receive-only channel, so we need to pass it
 	go ticker.tick(c)
 
 	return ticker
 }
 
-func (t Ticker) tick(c chan time.Time) {
+func (t Ticker) tick(c chan<- time.Time) {
 loop:
 	for {
 		t.sleep() // Sleep for duration + jitter

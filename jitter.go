@@ -51,7 +51,7 @@ func NewTicker(interval time.Duration, jitter time.Duration) *Ticker {
 	return ticker
 }
 
-func (t *Ticker) tick(c chan time.Time) {
+func (t Ticker) tick(c chan time.Time) {
 loop:
 	for {
 		t.sleep() // Sleep for duration + jitter
@@ -65,13 +65,13 @@ loop:
 	}
 }
 
-func (t *Ticker) sleep() {
+func (t Ticker) sleep() {
 	jitter := int64(t.jitter)
 	delay := time.Duration(t.random.Int63n(jitter))
 	time.Sleep(t.interval + delay)
 }
 
 // Stop will stop the ticker. It does not close the channel.
-func (t *Ticker) Stop() {
+func (t Ticker) Stop() {
 	t.stop <- true
 }
